@@ -56,6 +56,9 @@ class ProtobufClient {
         {headers: {'content-type': 'application/x-google-protobuf'}, responseType: 'arraybuffer'})
         .then(response => {
           return this._decodeWireMessage(response.data, responseMessageTypeName)
+        }).catch(err => {
+          var errorResponse = this._decodeWireMessage(err.response.data, "ErrorResponse")
+          throw Error(errorResponse.errorMessage)
         })
   }
 }

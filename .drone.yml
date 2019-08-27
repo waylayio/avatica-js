@@ -5,5 +5,5 @@ steps:
   - name: test
     image: node:12
     commands:
-      - yarn install --offline --non-interactive --frozen-lockfile
+      - yarn install --non-interactive --frozen-lockfile
       - yarn test

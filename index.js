@@ -1,15 +1,14 @@
 const protobuf = require('protobufjs')
 const axios = require('axios')
-const uuid = require("uuid/v1")
+const uuid = require('uuid/v1')
 
 // Load all the protobuf message definitions
-const root = protobuf.Root.fromJSON(require("./protobuf_bundle.json"));
+const root = protobuf.Root.fromJSON(require('./protobuf_bundle.json'))
 
 /**
  * Internal client that handles protobuf encoding/decoding and HTTP communication.
  */
 class ProtobufClient {
-
   constructor (url) {
     this._url = url
   }
@@ -27,8 +26,8 @@ class ProtobufClient {
     var encodedPayload = this._encode(payload, messageTypeName)
     var WireMessage = root.WireMessage
     var wireMessagePayload = {
-      'name': 'org.apache.calcite.avatica.proto.Requests$' + messageTypeName,
-      'wrappedMessage': encodedPayload
+      name: 'org.apache.calcite.avatica.proto.Requests$' + messageTypeName,
+      wrappedMessage: encodedPayload
     }
     var verifyError = WireMessage.verify(wireMessagePayload)
     if (verifyError) {
@@ -51,15 +50,15 @@ class ProtobufClient {
   post (messageAsJson, requestMessageTypeName, responseMessageTypeName) {
     var wireMessage = this._encodeAsWireMessage(messageAsJson, requestMessageTypeName, responseMessageTypeName)
     return axios.post(
-        this._url,
-        wireMessage,
-        {headers: {'content-type': 'application/x-google-protobuf'}, responseType: 'arraybuffer'})
-        .then(response => {
-          return this._decodeWireMessage(response.data, responseMessageTypeName)
-        }).catch(err => {
-          var errorResponse = this._decodeWireMessage(err.response.data, "ErrorResponse")
-          throw Error(errorResponse.errorMessage)
-        })
+      this._url,
+      wireMessage,
+      { headers: { 'content-type': 'application/x-google-protobuf' }, responseType: 'arraybuffer' })
+      .then(response => {
+        return this._decodeWireMessage(response.data, responseMessageTypeName)
+      }).catch(err => {
+        var errorResponse = this._decodeWireMessage(err.response.data, 'ErrorResponse')
+        throw Error(errorResponse.errorMessage)
+      })
   }
 }
 
@@ -76,9 +75,8 @@ function _mapColumnValue (columnValue) {
   } else if (scalarValue.type === 24) {
     return null
   } else {
-    throw Error("Don't know how to map type " + scalarValue.type + " -> " + scalarValue)
+    throw Error("Don't know how to map type " + scalarValue.type + ' -> ' + scalarValue)
   }
-
 }
 
 /**
@@ -91,9 +89,7 @@ class ResultSet {
   }
 }
 
-
 class Connection {
-
   constructor (connectionId, protobufClient) {
     this._connectionId = connectionId
     this._protobufClient = protobufClient
@@ -104,14 +100,13 @@ class Connection {
    *
    * Should be called on a connection once it is no longer needed.
    */
-  close() {
+  close () {
     return this._protobufClient.post({
       connectionId: this._connectionId
-    }, "CloseConnectionRequest", "CloseConnectionResponse")
+    }, 'CloseConnectionRequest', 'CloseConnectionResponse')
   }
 
   _processFrame (statementId, offset, frame, resultSet) {
-
     frame.rows.forEach(r => {
       var mappedRow = r.value.map(columnValue => _mapColumnValue(columnValue))
       resultSet.rows.push(mappedRow)
@@ -121,7 +116,7 @@ class Connection {
       this._protobufClient.post({
         connectionId: this._connectionId,
         statementId: statementId
-      }, "CloseStatementRequest", "CloseStatementResponse")
+      }, 'CloseStatementRequest', 'CloseStatementResponse')
       return resultSet
     }
 
@@ -134,9 +129,9 @@ class Connection {
     }
 
     return this._protobufClient.post(
-        fetchRequest,
-        "FetchRequest",
-        "FetchResponse"
+      fetchRequest,
+      'FetchRequest',
+      'FetchResponse'
     ).then(fetchResponse => {
       return this._processFrame(statementId, offset, fetchResponse.frame, resultSet)
     }).catch(err => {
@@ -154,31 +149,30 @@ class Connection {
    */
   query (sql) {
     return this._protobufClient.post(
-        {
-          // request: "createStatement",
-          connectionId: this._connectionId,
-        },
-        "CreateStatementRequest", "CreateStatementResponse"
+      {
+        // request: "createStatement",
+        connectionId: this._connectionId
+      },
+      'CreateStatementRequest', 'CreateStatementResponse'
     ).then(createStatementResponse => {
       var prepareAndExecuteRequest = {
         // request: "prepareAndExecute",
         connectionId: this._connectionId_connectionId,
         statementId: createStatementResponse.statementId,
         sql: sql,
-        maxRowCount: 9999999,
+        maxRowCount: 9999999
       }
       return this._protobufClient.post(
-          prepareAndExecuteRequest,
-          "PrepareAndExecuteRequest", "ExecuteResponse"
+        prepareAndExecuteRequest,
+        'PrepareAndExecuteRequest', 'ExecuteResponse'
       ).then(prepareAndExecuteResponse => {
         var columnNames = prepareAndExecuteResponse.results[0].signature.columns.map(col => col.label)
         return this._processFrame(createStatementResponse.statementId, 0,
-            prepareAndExecuteResponse.results[0].firstFrame,
-            new ResultSet(columnNames, []))
+          prepareAndExecuteResponse.results[0].firstFrame,
+          new ResultSet(columnNames, []))
       })
     })
   }
-
 }
 
 /**
@@ -197,30 +191,15 @@ function connect (url, apiKey, apiSecret) {
   var openConnectionPayload = {
     connectionId: connectionId,
     info: {
-      "user": apiKey,
-      "password": apiSecret}
+      user: apiKey,
+      password: apiSecret
+    }
   }
 
-  return protobufClient.post(openConnectionPayload, 'OpenConnectionRequest', "OpenConnectionResponse")
-      .then(response => {
-        return new Connection(connectionId, protobufClient)
-      })
+  return protobufClient.post(openConnectionPayload, 'OpenConnectionRequest', 'OpenConnectionResponse')
+    .then(response => {
+      return new Connection(connectionId, protobufClient)
+    })
 }
 
-
 module.exports = connect
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

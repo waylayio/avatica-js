@@ -1,4 +1,5 @@
-# Avatica JS
+# Avatica JS [![Build Status](http://drone.waylay.io/api/badges/waylayio/avatica-js/status.svg)](http://drone.waylay.io/waylayio/avatica-js)
+
 
 JavaScript connector to [Calcite Avatica Server](https://calcite.apache.org/avatica/)
 

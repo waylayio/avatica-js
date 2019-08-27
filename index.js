@@ -14,41 +14,41 @@ class ProtobufClient {
   }
 
   _encode (payload, messageTypeName) {
-    var MessageType = root.lookup(messageTypeName)
-    var verifyError = MessageType.verify(payload)
+    const MessageType = root.lookup(messageTypeName)
+    const verifyError = MessageType.verify(payload)
     if (verifyError) {
-      throw Error(verifyError)
+      throw new Error(verifyError)
     }
     return MessageType.encode(payload).finish()
   }
 
   _encodeAsWireMessage (payload, messageTypeName) {
-    var encodedPayload = this._encode(payload, messageTypeName)
-    var WireMessage = root.WireMessage
-    var wireMessagePayload = {
+    const encodedPayload = this._encode(payload, messageTypeName)
+    const WireMessage = root.WireMessage
+    const wireMessagePayload = {
       name: 'org.apache.calcite.avatica.proto.Requests$' + messageTypeName,
       wrappedMessage: encodedPayload
     }
-    var verifyError = WireMessage.verify(wireMessagePayload)
+    const verifyError = WireMessage.verify(wireMessagePayload)
     if (verifyError) {
-      throw Error(verifyError)
+      throw new Error(verifyError)
     }
     return WireMessage.encode(wireMessagePayload).finish()
   }
 
   _decode (payload, messageTypeName) {
-    var MessageType = root.lookup(messageTypeName)
+    const MessageType = root.lookup(messageTypeName)
     return MessageType.decode(payload)
   }
 
   _decodeWireMessage (payload, messageTypeName) {
-    var WireMessage = root.WireMessage
-    var decodedWireMessage = WireMessage.decode(payload)
+    const WireMessage = root.WireMessage
+    const decodedWireMessage = WireMessage.decode(payload)
     return this._decode(decodedWireMessage.wrappedMessage, messageTypeName)
   }
 
   post (messageAsJson, requestMessageTypeName, responseMessageTypeName) {
-    var wireMessage = this._encodeAsWireMessage(messageAsJson, requestMessageTypeName, responseMessageTypeName)
+    const wireMessage = this._encodeAsWireMessage(messageAsJson, requestMessageTypeName, responseMessageTypeName)
     return axios.post(
       this._url,
       wireMessage,
@@ -56,14 +56,14 @@ class ProtobufClient {
       .then(response => {
         return this._decodeWireMessage(response.data, responseMessageTypeName)
       }).catch(err => {
-        var errorResponse = this._decodeWireMessage(err.response.data, 'ErrorResponse')
-        throw Error(errorResponse.errorMessage)
+        const errorResponse = this._decodeWireMessage(err.response.data, 'ErrorResponse')
+        throw new Error(errorResponse.errorMessage)
       })
   }
 }
 
 function _mapColumnValue (columnValue) {
-  var scalarValue = columnValue.scalarValue
+  const scalarValue = columnValue.scalarValue
   if (scalarValue.type === 21) {
     return scalarValue.stringValue
   } else if (scalarValue.type === 22) {
@@ -75,7 +75,7 @@ function _mapColumnValue (columnValue) {
   } else if (scalarValue.type === 24) {
     return null
   } else {
-    throw Error("Don't know how to map type " + scalarValue.type + ' -> ' + scalarValue)
+    throw new Error("Don't know how to map type " + scalarValue.type + ' -> ' + scalarValue)
   }
 }
 
@@ -108,7 +108,7 @@ class Connection {
 
   _processFrame (statementId, offset, frame, resultSet) {
     frame.rows.forEach(r => {
-      var mappedRow = r.value.map(columnValue => _mapColumnValue(columnValue))
+      const mappedRow = r.value.map(columnValue => _mapColumnValue(columnValue))
       resultSet.rows.push(mappedRow)
     })
 
@@ -121,7 +121,7 @@ class Connection {
     }
 
     offset = offset + frame.rows.length
-    var fetchRequest = {
+    const fetchRequest = {
       connectionId: this._connectionId,
       statementId: statementId,
       offset: offset,
@@ -135,7 +135,7 @@ class Connection {
     ).then(fetchResponse => {
       return this._processFrame(statementId, offset, fetchResponse.frame, resultSet)
     }).catch(err => {
-      throw Error(err)
+      throw new Error(err)
     })
   }
 
@@ -155,7 +155,7 @@ class Connection {
       },
       'CreateStatementRequest', 'CreateStatementResponse'
     ).then(createStatementResponse => {
-      var prepareAndExecuteRequest = {
+      const prepareAndExecuteRequest = {
         // request: "prepareAndExecute",
         connectionId: this._connectionId_connectionId,
         statementId: createStatementResponse.statementId,
@@ -166,7 +166,7 @@ class Connection {
         prepareAndExecuteRequest,
         'PrepareAndExecuteRequest', 'ExecuteResponse'
       ).then(prepareAndExecuteResponse => {
-        var columnNames = prepareAndExecuteResponse.results[0].signature.columns.map(col => col.label)
+        const columnNames = prepareAndExecuteResponse.results[0].signature.columns.map(col => col.label)
         return this._processFrame(createStatementResponse.statementId, 0,
           prepareAndExecuteResponse.results[0].firstFrame,
           new ResultSet(columnNames, []))
@@ -186,9 +186,9 @@ class Connection {
  * @returns {Promise<Connection | never>} a promise to a Connection object which allows querying
  */
 function connect (url, apiKey, apiSecret) {
-  var protobufClient = new ProtobufClient(url)
-  var connectionId = uuid()
-  var openConnectionPayload = {
+  const protobufClient = new ProtobufClient(url)
+  const connectionId = uuid()
+  const openConnectionPayload = {
     connectionId: connectionId,
     info: {
       user: apiKey,

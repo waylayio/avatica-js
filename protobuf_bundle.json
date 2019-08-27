@@ -1,0 +1,1122 @@
+{
+  "options": {
+    "java_package": "org.apache.calcite.avatica.proto"
+  },
+  "nested": {
+    "ConnectionProperties": {
+      "fields": {
+        "isDirty": {
+          "type": "bool",
+          "id": 1
+        },
+        "autoCommit": {
+          "type": "bool",
+          "id": 2
+        },
+        "hasAutoCommit": {
+          "type": "bool",
+          "id": 7
+        },
+        "readOnly": {
+          "type": "bool",
+          "id": 3
+        },
+        "hasReadOnly": {
+          "type": "bool",
+          "id": 8
+        },
+        "transactionIsolation": {
+          "type": "uint32",
+          "id": 4
+        },
+        "catalog": {
+          "type": "string",
+          "id": 5
+        },
+        "schema": {
+          "type": "string",
+          "id": 6
+        }
+      }
+    },
+    "StatementHandle": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "id": {
+          "type": "uint32",
+          "id": 2
+        },
+        "signature": {
+          "type": "Signature",
+          "id": 3
+        }
+      }
+    },
+    "Signature": {
+      "fields": {
+        "columns": {
+          "rule": "repeated",
+          "type": "ColumnMetaData",
+          "id": 1
+        },
+        "sql": {
+          "type": "string",
+          "id": 2
+        },
+        "parameters": {
+          "rule": "repeated",
+          "type": "AvaticaParameter",
+          "id": 3
+        },
+        "cursorFactory": {
+          "type": "CursorFactory",
+          "id": 4
+        },
+        "statementType": {
+          "type": "StatementType",
+          "id": 5
+        }
+      }
+    },
+    "StatementType": {
+      "values": {
+        "SELECT": 0,
+        "INSERT": 1,
+        "UPDATE": 2,
+        "DELETE": 3,
+        "UPSERT": 4,
+        "MERGE": 5,
+        "OTHER_DML": 6,
+        "CREATE": 7,
+        "DROP": 8,
+        "ALTER": 9,
+        "OTHER_DDL": 10,
+        "CALL": 11
+      }
+    },
+    "ColumnMetaData": {
+      "fields": {
+        "ordinal": {
+          "type": "uint32",
+          "id": 1
+        },
+        "autoIncrement": {
+          "type": "bool",
+          "id": 2
+        },
+        "caseSensitive": {
+          "type": "bool",
+          "id": 3
+        },
+        "searchable": {
+          "type": "bool",
+          "id": 4
+        },
+        "currency": {
+          "type": "bool",
+          "id": 5
+        },
+        "nullable": {
+          "type": "uint32",
+          "id": 6
+        },
+        "signed": {
+          "type": "bool",
+          "id": 7
+        },
+        "displaySize": {
+          "type": "uint32",
+          "id": 8
+        },
+        "label": {
+          "type": "string",
+          "id": 9
+        },
+        "columnName": {
+          "type": "string",
+          "id": 10
+        },
+        "schemaName": {
+          "type": "string",
+          "id": 11
+        },
+        "precision": {
+          "type": "uint32",
+          "id": 12
+        },
+        "scale": {
+          "type": "uint32",
+          "id": 13
+        },
+        "tableName": {
+          "type": "string",
+          "id": 14
+        },
+        "catalogName": {
+          "type": "string",
+          "id": 15
+        },
+        "readOnly": {
+          "type": "bool",
+          "id": 16
+        },
+        "writable": {
+          "type": "bool",
+          "id": 17
+        },
+        "definitelyWritable": {
+          "type": "bool",
+          "id": 18
+        },
+        "columnClassName": {
+          "type": "string",
+          "id": 19
+        },
+        "type": {
+          "type": "AvaticaType",
+          "id": 20
+        }
+      }
+    },
+    "Rep": {
+      "values": {
+        "PRIMITIVE_BOOLEAN": 0,
+        "PRIMITIVE_BYTE": 1,
+        "PRIMITIVE_CHAR": 2,
+        "PRIMITIVE_SHORT": 3,
+        "PRIMITIVE_INT": 4,
+        "PRIMITIVE_LONG": 5,
+        "PRIMITIVE_FLOAT": 6,
+        "PRIMITIVE_DOUBLE": 7,
+        "BOOLEAN": 8,
+        "BYTE": 9,
+        "CHARACTER": 10,
+        "SHORT": 11,
+        "INTEGER": 12,
+        "LONG": 13,
+        "FLOAT": 14,
+        "DOUBLE": 15,
+        "BIG_INTEGER": 25,
+        "BIG_DECIMAL": 26,
+        "JAVA_SQL_TIME": 16,
+        "JAVA_SQL_TIMESTAMP": 17,
+        "JAVA_SQL_DATE": 18,
+        "JAVA_UTIL_DATE": 19,
+        "BYTE_STRING": 20,
+        "STRING": 21,
+        "NUMBER": 22,
+        "OBJECT": 23,
+        "NULL": 24,
+        "ARRAY": 27,
+        "STRUCT": 28,
+        "MULTISET": 29
+      }
+    },
+    "AvaticaType": {
+      "fields": {
+        "id": {
+          "type": "uint32",
+          "id": 1
+        },
+        "name": {
+          "type": "string",
+          "id": 2
+        },
+        "rep": {
+          "type": "Rep",
+          "id": 3
+        },
+        "columns": {
+          "rule": "repeated",
+          "type": "ColumnMetaData",
+          "id": 4
+        },
+        "component": {
+          "type": "AvaticaType",
+          "id": 5
+        }
+      }
+    },
+    "AvaticaParameter": {
+      "fields": {
+        "signed": {
+          "type": "bool",
+          "id": 1
+        },
+        "precision": {
+          "type": "uint32",
+          "id": 2
+        },
+        "scale": {
+          "type": "uint32",
+          "id": 3
+        },
+        "parameterType": {
+          "type": "uint32",
+          "id": 4
+        },
+        "typeName": {
+          "type": "string",
+          "id": 5
+        },
+        "className": {
+          "type": "string",
+          "id": 6
+        },
+        "name": {
+          "type": "string",
+          "id": 7
+        }
+      }
+    },
+    "CursorFactory": {
+      "fields": {
+        "style": {
+          "type": "Style",
+          "id": 1
+        },
+        "className": {
+          "type": "string",
+          "id": 2
+        },
+        "fieldNames": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 3
+        }
+      },
+      "nested": {
+        "Style": {
+          "values": {
+            "OBJECT": 0,
+            "RECORD": 1,
+            "RECORD_PROJECTION": 2,
+            "ARRAY": 3,
+            "LIST": 4,
+            "MAP": 5
+          }
+        }
+      }
+    },
+    "Frame": {
+      "fields": {
+        "offset": {
+          "type": "uint64",
+          "id": 1
+        },
+        "done": {
+          "type": "bool",
+          "id": 2
+        },
+        "rows": {
+          "rule": "repeated",
+          "type": "Row",
+          "id": 3
+        }
+      }
+    },
+    "Row": {
+      "fields": {
+        "value": {
+          "rule": "repeated",
+          "type": "ColumnValue",
+          "id": 1
+        }
+      }
+    },
+    "DatabaseProperty": {
+      "fields": {
+        "name": {
+          "type": "string",
+          "id": 1
+        },
+        "functions": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "WireMessage": {
+      "fields": {
+        "name": {
+          "type": "string",
+          "id": 1
+        },
+        "wrappedMessage": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "ColumnValue": {
+      "fields": {
+        "value": {
+          "rule": "repeated",
+          "type": "TypedValue",
+          "id": 1
+        },
+        "arrayValue": {
+          "rule": "repeated",
+          "type": "TypedValue",
+          "id": 2
+        },
+        "hasArrayValue": {
+          "type": "bool",
+          "id": 3
+        },
+        "scalarValue": {
+          "type": "TypedValue",
+          "id": 4
+        }
+      }
+    },
+    "TypedValue": {
+      "fields": {
+        "type": {
+          "type": "Rep",
+          "id": 1
+        },
+        "boolValue": {
+          "type": "bool",
+          "id": 2
+        },
+        "stringValue": {
+          "type": "string",
+          "id": 3
+        },
+        "numberValue": {
+          "type": "sint64",
+          "id": 4
+        },
+        "bytesValue": {
+          "type": "bytes",
+          "id": 5
+        },
+        "doubleValue": {
+          "type": "double",
+          "id": 6
+        },
+        "null": {
+          "type": "bool",
+          "id": 7
+        },
+        "arrayValue": {
+          "rule": "repeated",
+          "type": "TypedValue",
+          "id": 8
+        },
+        "componentType": {
+          "type": "Rep",
+          "id": 9
+        },
+        "implicitlyNull": {
+          "type": "bool",
+          "id": 10
+        }
+      }
+    },
+    "Severity": {
+      "values": {
+        "UNKNOWN_SEVERITY": 0,
+        "FATAL_SEVERITY": 1,
+        "ERROR_SEVERITY": 2,
+        "WARNING_SEVERITY": 3
+      }
+    },
+    "MetaDataOperation": {
+      "values": {
+        "GET_ATTRIBUTES": 0,
+        "GET_BEST_ROW_IDENTIFIER": 1,
+        "GET_CATALOGS": 2,
+        "GET_CLIENT_INFO_PROPERTIES": 3,
+        "GET_COLUMN_PRIVILEGES": 4,
+        "GET_COLUMNS": 5,
+        "GET_CROSS_REFERENCE": 6,
+        "GET_EXPORTED_KEYS": 7,
+        "GET_FUNCTION_COLUMNS": 8,
+        "GET_FUNCTIONS": 9,
+        "GET_IMPORTED_KEYS": 10,
+        "GET_INDEX_INFO": 11,
+        "GET_PRIMARY_KEYS": 12,
+        "GET_PROCEDURE_COLUMNS": 13,
+        "GET_PROCEDURES": 14,
+        "GET_PSEUDO_COLUMNS": 15,
+        "GET_SCHEMAS": 16,
+        "GET_SCHEMAS_WITH_ARGS": 17,
+        "GET_SUPER_TABLES": 18,
+        "GET_SUPER_TYPES": 19,
+        "GET_TABLE_PRIVILEGES": 20,
+        "GET_TABLES": 21,
+        "GET_TABLE_TYPES": 22,
+        "GET_TYPE_INFO": 23,
+        "GET_UDTS": 24,
+        "GET_VERSION_COLUMNS": 25
+      }
+    },
+    "MetaDataOperationArgument": {
+      "fields": {
+        "stringValue": {
+          "type": "string",
+          "id": 1
+        },
+        "boolValue": {
+          "type": "bool",
+          "id": 2
+        },
+        "intValue": {
+          "type": "sint32",
+          "id": 3
+        },
+        "stringArrayValues": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 4
+        },
+        "intArrayValues": {
+          "rule": "repeated",
+          "type": "sint32",
+          "id": 5
+        },
+        "type": {
+          "type": "ArgumentType",
+          "id": 6
+        }
+      },
+      "nested": {
+        "ArgumentType": {
+          "values": {
+            "STRING": 0,
+            "BOOL": 1,
+            "INT": 2,
+            "REPEATED_STRING": 3,
+            "REPEATED_INT": 4,
+            "NULL": 5
+          }
+        }
+      }
+    },
+    "StateType": {
+      "values": {
+        "SQL": 0,
+        "METADATA": 1
+      }
+    },
+    "QueryState": {
+      "fields": {
+        "type": {
+          "type": "StateType",
+          "id": 1
+        },
+        "sql": {
+          "type": "string",
+          "id": 2
+        },
+        "op": {
+          "type": "MetaDataOperation",
+          "id": 3
+        },
+        "args": {
+          "rule": "repeated",
+          "type": "MetaDataOperationArgument",
+          "id": 4
+        },
+        "hasArgs": {
+          "type": "bool",
+          "id": 5
+        },
+        "hasSql": {
+          "type": "bool",
+          "id": 6
+        },
+        "hasOp": {
+          "type": "bool",
+          "id": 7
+        }
+      }
+    },
+    "CatalogsRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "DatabasePropertyRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "SchemasRequest": {
+      "fields": {
+        "catalog": {
+          "type": "string",
+          "id": 1
+        },
+        "schemaPattern": {
+          "type": "string",
+          "id": 2
+        },
+        "connectionId": {
+          "type": "string",
+          "id": 3
+        }
+      }
+    },
+    "TablesRequest": {
+      "fields": {
+        "catalog": {
+          "type": "string",
+          "id": 1
+        },
+        "schemaPattern": {
+          "type": "string",
+          "id": 2
+        },
+        "tableNamePattern": {
+          "type": "string",
+          "id": 3
+        },
+        "typeList": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 4
+        },
+        "hasTypeList": {
+          "type": "bool",
+          "id": 6
+        },
+        "connectionId": {
+          "type": "string",
+          "id": 7
+        }
+      }
+    },
+    "TableTypesRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "ColumnsRequest": {
+      "fields": {
+        "catalog": {
+          "type": "string",
+          "id": 1
+        },
+        "schemaPattern": {
+          "type": "string",
+          "id": 2
+        },
+        "tableNamePattern": {
+          "type": "string",
+          "id": 3
+        },
+        "columnNamePattern": {
+          "type": "string",
+          "id": 4
+        },
+        "connectionId": {
+          "type": "string",
+          "id": 5
+        }
+      }
+    },
+    "TypeInfoRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "PrepareAndExecuteRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "sql": {
+          "type": "string",
+          "id": 2
+        },
+        "maxRowCount": {
+          "type": "uint64",
+          "id": 3
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 4
+        },
+        "maxRowsTotal": {
+          "type": "int64",
+          "id": 5
+        },
+        "firstFrameMaxSize": {
+          "type": "int32",
+          "id": 6
+        }
+      }
+    },
+    "PrepareRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "sql": {
+          "type": "string",
+          "id": 2
+        },
+        "maxRowCount": {
+          "type": "uint64",
+          "id": 3
+        },
+        "maxRowsTotal": {
+          "type": "int64",
+          "id": 4
+        }
+      }
+    },
+    "FetchRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "offset": {
+          "type": "uint64",
+          "id": 3
+        },
+        "fetchMaxRowCount": {
+          "type": "uint32",
+          "id": 4
+        },
+        "frameMaxSize": {
+          "type": "int32",
+          "id": 5
+        }
+      }
+    },
+    "CreateStatementRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "CloseStatementRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        }
+      }
+    },
+    "OpenConnectionRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "info": {
+          "keyType": "string",
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "CloseConnectionRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "ConnectionSyncRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "connProps": {
+          "type": "ConnectionProperties",
+          "id": 2
+        }
+      }
+    },
+    "ExecuteRequest": {
+      "fields": {
+        "statementHandle": {
+          "type": "StatementHandle",
+          "id": 1
+        },
+        "parameterValues": {
+          "rule": "repeated",
+          "type": "TypedValue",
+          "id": 2
+        },
+        "deprecatedFirstFrameMaxSize": {
+          "type": "uint64",
+          "id": 3
+        },
+        "hasParameterValues": {
+          "type": "bool",
+          "id": 4
+        },
+        "firstFrameMaxSize": {
+          "type": "int32",
+          "id": 5
+        }
+      }
+    },
+    "SyncResultsRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "state": {
+          "type": "QueryState",
+          "id": 3
+        },
+        "offset": {
+          "type": "uint64",
+          "id": 4
+        }
+      }
+    },
+    "CommitRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "RollbackRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "PrepareAndExecuteBatchRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "sqlCommands": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 3
+        }
+      }
+    },
+    "UpdateBatch": {
+      "fields": {
+        "parameterValues": {
+          "rule": "repeated",
+          "type": "TypedValue",
+          "id": 1
+        }
+      }
+    },
+    "ExecuteBatchRequest": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "updates": {
+          "rule": "repeated",
+          "type": "UpdateBatch",
+          "id": 3
+        }
+      }
+    },
+    "ResultSetResponse": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "ownStatement": {
+          "type": "bool",
+          "id": 3
+        },
+        "signature": {
+          "type": "Signature",
+          "id": 4
+        },
+        "firstFrame": {
+          "type": "Frame",
+          "id": 5
+        },
+        "updateCount": {
+          "type": "uint64",
+          "id": 6
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 7
+        }
+      }
+    },
+    "ExecuteResponse": {
+      "fields": {
+        "results": {
+          "rule": "repeated",
+          "type": "ResultSetResponse",
+          "id": 1
+        },
+        "missingStatement": {
+          "type": "bool",
+          "id": 2
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 3
+        }
+      }
+    },
+    "PrepareResponse": {
+      "fields": {
+        "statement": {
+          "type": "StatementHandle",
+          "id": 1
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 2
+        }
+      }
+    },
+    "FetchResponse": {
+      "fields": {
+        "frame": {
+          "type": "Frame",
+          "id": 1
+        },
+        "missingStatement": {
+          "type": "bool",
+          "id": 2
+        },
+        "missingResults": {
+          "type": "bool",
+          "id": 3
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 4
+        }
+      }
+    },
+    "CreateStatementResponse": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 3
+        }
+      }
+    },
+    "CloseStatementResponse": {
+      "fields": {
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 1
+        }
+      }
+    },
+    "OpenConnectionResponse": {
+      "fields": {
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 1
+        }
+      }
+    },
+    "CloseConnectionResponse": {
+      "fields": {
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 1
+        }
+      }
+    },
+    "ConnectionSyncResponse": {
+      "fields": {
+        "connProps": {
+          "type": "ConnectionProperties",
+          "id": 1
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 2
+        }
+      }
+    },
+    "DatabasePropertyElement": {
+      "fields": {
+        "key": {
+          "type": "DatabaseProperty",
+          "id": 1
+        },
+        "value": {
+          "type": "TypedValue",
+          "id": 2
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 3
+        }
+      }
+    },
+    "DatabasePropertyResponse": {
+      "fields": {
+        "props": {
+          "rule": "repeated",
+          "type": "DatabasePropertyElement",
+          "id": 1
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 2
+        }
+      }
+    },
+    "ErrorResponse": {
+      "fields": {
+        "exceptions": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
+        },
+        "hasExceptions": {
+          "type": "bool",
+          "id": 7
+        },
+        "errorMessage": {
+          "type": "string",
+          "id": 2
+        },
+        "severity": {
+          "type": "Severity",
+          "id": 3
+        },
+        "errorCode": {
+          "type": "uint32",
+          "id": 4
+        },
+        "sqlState": {
+          "type": "string",
+          "id": 5
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 6
+        }
+      }
+    },
+    "SyncResultsResponse": {
+      "fields": {
+        "missingStatement": {
+          "type": "bool",
+          "id": 1
+        },
+        "moreResults": {
+          "type": "bool",
+          "id": 2
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 3
+        }
+      }
+    },
+    "RpcMetadata": {
+      "fields": {
+        "serverAddress": {
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "CommitResponse": {
+      "fields": {}
+    },
+    "RollbackResponse": {
+      "fields": {}
+    },
+    "ExecuteBatchResponse": {
+      "fields": {
+        "connectionId": {
+          "type": "string",
+          "id": 1
+        },
+        "statementId": {
+          "type": "uint32",
+          "id": 2
+        },
+        "updateCounts": {
+          "rule": "repeated",
+          "type": "uint64",
+          "id": 3
+        },
+        "missingStatement": {
+          "type": "bool",
+          "id": 4
+        },
+        "metadata": {
+          "type": "RpcMetadata",
+          "id": 5
+        }
+      }
+    }
+  }
+}

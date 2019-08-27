@@ -1,0 +1,9 @@
+kind: pipeline
+name: test & build
+
+steps:
+  - name: test
+    image: node:12
+    commands:
+      - yarn install --offline --non-interactive --frozen-lockfile
+      - yarn test

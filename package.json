@@ -4,8 +4,9 @@
   "description": "Javascript binding for Calcite's Avatica Server",
   "main": "index.js",
   "scripts": {
-    "test": "standard && jest",
-    "test:lint": "standard"
+    "test": "standard && jest ./test",
+    "test:lint": "standard",
+    "integration-test": "jest ./integration_test"
   },
   "author": "",
   "license": "ISC",

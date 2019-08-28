@@ -7,3 +7,14 @@ steps:
     commands:
       - yarn install --non-interactive --frozen-lockfile
       - yarn test
+
+  - name: integration-test
+    image: node:12
+    environment:
+      STAGING_CLIENT_ID:
+        from_secret: STAGING_CLIENT_ID
+      STAGING_CLIENT_SECRET:
+        from_secret: STAGING_CLIENT_SECRET
+    commands:
+      - yarn install --non-interactive --frozen-lockfile
+      - yarn integration-test

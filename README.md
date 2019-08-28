@@ -4,6 +4,22 @@
 JavaScript connector to [Calcite Avatica Server](https://calcite.apache.org/avatica/)
 
 
+## Building
+
+    yarn install
+    
+    
+## Test
+
+    yarn test
+
+## Generating the protobuf JSON
+
+    ./node_modules/protobufjs/bin/pbjs -t json  \
+        proto/common.proto proto/requests.proto \
+        proto/responses.proto  > lib/protobuf_bundle.json      
+
+
 ## Example
 
 ```

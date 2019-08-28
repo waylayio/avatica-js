@@ -1,6 +1,7 @@
 const protobuf = require('protobufjs')
 const axios = require('axios')
 const uuid = require('uuid/v1')
+const os = require('os')
 
 // Load all the protobuf message definitions
 const root = protobuf.Root.fromJSON(require('./protobuf_bundle.json'))
@@ -26,7 +27,7 @@ class ProtobufClient {
     const encodedPayload = this._encode(payload, messageTypeName)
     const WireMessage = root.WireMessage
     const wireMessagePayload = {
-      name: 'org.apache.calcite.avatica.proto.Requests$' + messageTypeName,
+      name: `org.apache.calcite.avatica.proto.Requests$${messageTypeName}`,
       wrappedMessage: encodedPayload
     }
     const verifyError = WireMessage.verify(wireMessagePayload)
@@ -52,7 +53,12 @@ class ProtobufClient {
     return axios.post(
       this._url,
       wireMessage,
-      { headers: { 'content-type': 'application/x-google-protobuf' }, responseType: 'arraybuffer' })
+      {
+        headers: {
+          'content-type': 'application/x-google-protobuf'
+        },
+        responseType: 'arraybuffer'
+      })
       .then(response => {
         return this._decodeWireMessage(response.data, responseMessageTypeName)
       }).catch(err => {
@@ -75,7 +81,7 @@ function _mapColumnValue (columnValue) {
   } else if (scalarValue.type === 24) {
     return null
   } else {
-    throw new Error("Don't know how to map type " + scalarValue.type + ' -> ' + scalarValue)
+    throw new Error(`Don't know how to map type ${scalarValue.type} -> ${scalarValue}`)
   }
 }
 
@@ -134,8 +140,6 @@ class Connection {
       'FetchResponse'
     ).then(fetchResponse => {
       return this._processFrame(statementId, offset, fetchResponse.frame, resultSet)
-    }).catch(err => {
-      throw new Error(err)
     })
   }
 
@@ -150,13 +154,11 @@ class Connection {
   query (sql) {
     return this._protobufClient.post(
       {
-        // request: "createStatement",
         connectionId: this._connectionId
       },
       'CreateStatementRequest', 'CreateStatementResponse'
     ).then(createStatementResponse => {
       const prepareAndExecuteRequest = {
-        // request: "prepareAndExecute",
         connectionId: this._connectionId_connectionId,
         statementId: createStatementResponse.statementId,
         sql: sql,
@@ -187,7 +189,7 @@ class Connection {
  */
 function connect (url, apiKey, apiSecret) {
   const protobufClient = new ProtobufClient(url)
-  const connectionId = uuid()
+  const connectionId = `${uuid()}@${os.hostname()}`
   const openConnectionPayload = {
     connectionId: connectionId,
     info: {
